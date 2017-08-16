@@ -1,9 +1,3 @@
 eclipse.preferences.version=1
-encoding//WebContent/css/checkWorktime.css=UTF-8
-encoding//WebContent/css/checkWorktimeDetail.css=UTF-8
-encoding//WebContent/css/detailWorktime.css=UTF-8
-encoding//WebContent/css/holidayMaintain.css=UTF-8
-encoding//WebContent/css/mgrSearchWorktime.css=UTF-8
-encoding//WebContent/css/searchEmpWorktime.css=UTF-8
-encoding//WebContent/css/writeWorktimeSub.css=UTF-8
+encoding//src/main/java=UTF-8
 encoding/<project>=UTF-8
