@@ -1,0 +1,184 @@
+/*非正式 區塊*/
+#test{
+    position: fixed;
+    bottom: 0rem;
+    left: 0;
+    z-index: 999;
+}
+
+
+#header_row_div{
+    color: white;
+    background-color: black;
+}
+
+.navbar-center {
+  display: inline-block;
+  float: none;
+  vertical-align: top;
+}
+
+.navbar-collapse-center {
+  text-align: center;
+}
+.navbar-brand-active{
+    color: white!important;
+}
+
+.navbar-right> li:last-child{
+    margin-right: 20px;
+}
+.navbar-header button{
+    border: 1px solid #ffffff!important;
+}
+#first_bar .navbar-header{
+    width: 100%;
+}
+#first_bar .navbar-nav{
+    position: absolute;
+    top: 15px;
+    right: 0;
+}
+#first_bar .navbar-toggle{
+    color:  #a8a8a8;
+}
+#first_bar .navbar-toggle:hover{
+    color: white;
+}
+
+
+#main_content_div{
+    padding: 0;
+}
+
+
+/*個人資料*/
+#label_cancel_personInfo{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    z-index: 1;
+    text-align: center;
+}
+
+
+#info{
+    display: inline-block;
+    width: auto;
+    min-width: 60%;
+    height: 300px;
+    
+    border: none;
+    border-radius: 2%;
+    text-align: center;
+    overflow:hidden;
+    overflow-x: hidden;
+    overflow-y:hidden;
+    margin-top:100px;
+}
+html{
+    height: 100%;
+}
+body{
+    height: 100%;
+}
+.container-fluid{
+    height: 100%;
+}
+/*子視窗*/
+#main_ifram{
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+/****************內容區塊**********/
+
+
+
+/*功能選單*/
+#content_menu_div{
+    padding-top: 50px;
+}
+#content_menu_div ul{
+    height: auto;
+    width:auto;
+    margin:4rem auto 0 auto;
+    text-align: center;
+}
+#content_menu_div ul li{
+    height: 170px;
+    width: 150px;
+    display: inline-block;
+    margin: 1%;
+    font-size: 25px;
+    transition: all 1s;
+    
+}
+ .option i{
+    margin: 0.5rem 0;
+    font-size: 100px !important;
+}
+
+.option{
+    position: relative;
+    display:inline-block;
+    height: 100%;
+    width: 100%;
+    border-radius: 5%;
+    cursor: pointer;
+    background-color: rgba(240, 248, 255, 0.33);
+    box-shadow:0.05rem 0.05rem 0.7rem 0.2rem #777f83;
+    position: relative;
+    transition: color 0.3s;
+}
+.option::before{
+    content: "";
+    position: absolute;
+    top: 6.5rem;
+    left: 20%;
+}
+
+
+.option:hover{
+    color: rgb(131, 131, 131);
+    box-shadow: 0.2rem 0.2rem 0.5rem 0.25rem #777f83;
+}
+#change_password::after{
+    content: "\f013";
+    position: absolute;
+    top: 3rem;
+    left: calc(50% - 0rem);
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 70px;
+    color: #e0e0e0;
+    transform: rotate(0deg);
+    text-shadow: 1px 1px 10px #000000;
+    opacity: 0;
+    transition: transform 0.5s;
+}
+#change_password:hover::after{
+    opacity: 1;
+    
+    transform: rotate(160deg);
+    transition-delay: 0.2s;
+}
+#holiday_div::after,#e_manage_div::after{
+    content: "\f040";
+    position: absolute;
+    top: 2.5rem;
+    left: calc(50% - 0rem);
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: 80px;
+    color: #000000;
+    opacity: 0;
+    
+}
+#holiday_div:hover::after,#e_manage_div:hover::after{
+    
+    opacity: 1;
+}

@@ -1,0 +1,94 @@
+
+html{
+    font-size: 20px;
+    height: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: auto;
+    width: 100%;
+    text-align: center;
+    margin: 0 ;
+    display: inline-block;
+}
+body >div{
+    margin: 0 10px;
+}
+h1{
+    margin: 0.7rem 0;
+}
+td{
+    text-align: center;
+    outline: 1px solid black;
+}
+table{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    padding: 0 ;
+    font-size: 20px;
+    font-weight: 800;
+    box-shadow: 5px 5px 10px 2px #968f8f;
+    
+}
+
+.thead{
+    color: white;
+    background-color: black!important;
+    
+}
+#main_table thead tr:first-child th:nth-child(n+4){
+    min-width: 125px;
+}
+th{
+    outline: 1px #ffffff solid;
+    text-align: center;
+}
+tbody tr{
+    //background-color: #dedede!important;
+    position: relative;
+     z-index: -1;
+    overflow: hidden!important;
+}
+tbody tr *:not(.holdon-overlay,.holdon-overlay *){
+    position: relative;
+     //z-index: 1;
+    
+}
+tbody tr:not([detail]):hover{
+    background: #e6e6e6!important;
+}
+tr[detail] td{
+    padding: 0!important;
+}
+tr[detail] iframe{
+    width: 100%;
+    height: 300px;
+}
+
+.details-control{
+    cursor: pointer;
+}
+.details-control i{
+    padding:0 30px;
+}
+.details-control:hover{
+    color: #a5d5ff;
+}
+.write{
+    color: #80bdf2;
+}
+
+.thead td{
+    outline: 1px solid #ffffff;
+}
+
+.holiday{
+    background-color: rgba(255, 175, 175, 0.72);
+}
+
+.partOfHoliday{
+    background-color: rgba(255, 217, 217, 0.71);
+}
