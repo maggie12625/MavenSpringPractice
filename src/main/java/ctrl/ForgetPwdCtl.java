@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -27,7 +28,7 @@ public class ForgetPwdCtl {
 	private static final int MAXPASSWORD = 6;
 	private static final String FORGET_PWD_PAGE = "/forgetPwd";
 	
-	@RequestMapping("/Forget.do")
+	@RequestMapping(value="/ForgetPwd.do",method=RequestMethod.POST)
 	public String simple(HttpSession session,Model model,
 			@RequestParam("empno")String empno,@RequestParam("id")String id) {
 //		request.removeAttribute("result");
@@ -38,8 +39,9 @@ public class ForgetPwdCtl {
 		Map<String, String> errorMsgs = new HashMap<>();
 //		String empno = request.getParameter("empno");
 //		String id = request.getParameter("id").toUpperCase();
+		id=id.toUpperCase();
 		model.addAttribute("empno", empno);
-		model.addAttribute("id", id.toUpperCase());
+		model.addAttribute("id", id);
 		EmployeeService employeeService = new EmployeeService();
 
 		// 是否有此員編
@@ -76,7 +78,6 @@ public class ForgetPwdCtl {
 		do {
 			new_password = new StringBuilder();
 			for (int i = 1; i <= MAXPASSWORD; i++) {
-				System.out.println(i);
 				new_password.append(PwdContent[(int) (Math.random() * PwdContent.length)]);
 			}
 			System.out.println(new_password.toString());
