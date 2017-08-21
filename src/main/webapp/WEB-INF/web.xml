@@ -26,7 +26,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
-	<filter>
+	<!-- <filter>
 		<filter-name>csrfFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 		<async-supported>true</async-supported>
@@ -34,7 +34,7 @@
 	<filter-mapping>
 		<filter-name>csrfFilter</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping> -->
     
 	<!-- Processes application requests -->
 	<servlet>
@@ -103,7 +103,7 @@
     <servlet-name>WorktimeServlet</servlet-name>
     <url-pattern>/Worktime.do</url-pattern>
   </servlet-mapping>
-  <servlet>
+  <!-- <servlet>
     <description></description>
     <display-name>WorktimeDetailServlet</display-name>
     <servlet-name>WorktimeDetailServlet</servlet-name>
@@ -112,7 +112,7 @@
   <servlet-mapping>
     <servlet-name>WorktimeDetailServlet</servlet-name>
     <url-pattern>/WorktimeDetail.do</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping> -->
   <servlet>
     <description></description>
     <display-name>ForgetPwd</display-name>
