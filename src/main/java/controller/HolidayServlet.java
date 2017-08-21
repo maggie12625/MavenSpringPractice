@@ -128,7 +128,7 @@ public class HolidayServlet extends HttpServlet {
 		Holiday holiday=new Holiday();
 		holiday.setChangeDate(date);
 		holiday.setHours(Integer.parseInt(time));
-		holiday.setReason(reason);
+		holiday.setReason(reason);   
 		holiday.setStatus(status);
 		
 		//如果沒有填原因

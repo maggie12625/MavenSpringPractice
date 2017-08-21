@@ -1,0 +1,112 @@
+html{
+    display: inline-block;
+    font-size: 20px;
+    height: auto;
+    width: auto;
+    margin: 0;
+    padding: 0;
+}
+body{
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+
+
+#title {
+    display: inline-block;
+    width: 100%;
+    margin-top:5px;
+    margin-bottom: 20px ;
+    color: #000000;
+    
+}
+#title h1{
+    margin: 0;
+}
+#personInfo{
+    display: inline-block;
+    width: auto; 
+    height: auto;
+    text-align: center;
+    margin: 0 5%;
+    box-shadow:10px 10px 40px rgba(42%, 42%, 42%, 0.5);
+    overflow: hidden;
+    border-radius: 2%;
+    border: 3px rgba(152, 152, 152, 0.47) solid;
+}
+
+#p_info {    
+    position: relative;
+    display:inline-block; 
+    height: 100%;
+    width:100%;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+}
+
+#info_content{
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    height: auto;
+}
+#info_content table{
+    margin: 0 auto 1.5rem auto;
+    text-align: center;
+    height: 100%;
+    width: 90%;
+}
+
+#info_content table td{
+    height: 100%;
+    width: auto;
+    border: 1px rgb(15, 15, 15) double;
+    background-color: #ffffff;
+    color: #000000;
+    margin: 0;
+}
+#info_content tr input{
+    text-align: center;
+    height:100%;
+    width: 100%;
+    
+    border: none;
+    background-color:#ffffff;
+    color: #000000;
+    font-size: 1rem;
+}
+#info_content tr input:disabled{
+    background-color: none;
+    color:black;
+}
+#state_sel{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: none;
+}
+
+
+#close{
+    position:absolute;
+    right: 0;
+    margin: 5px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #030303;
+}
+
+#close:hover{
+    color: #acacac;
+}
+.bg_b_cl_w {
+    background-color: #e5e5e5!important;
+    color: black!important;
+}
+
