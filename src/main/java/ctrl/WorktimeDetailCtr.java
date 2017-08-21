@@ -28,8 +28,8 @@ import service.EmailService;
 import service.HolidayService;
 import service.WorktimeDetialService;
 
-@Controller
-public class WorktimeDetailServlet {
+//@Controller
+public class WorktimeDetailCtr {
 	private static final String SEARCH_DETAIL_WORKTIME = "/WEB-INF/views/worktime/detailWorktime.jsp";
 	private static final String CHECK_WORKTIME_DETAIL_PAGE = "/WEB-INF/views/manager/checkWorktimeDetail.jsp";
 
