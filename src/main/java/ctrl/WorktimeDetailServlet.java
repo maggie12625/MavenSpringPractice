@@ -36,8 +36,8 @@ public class WorktimeDetailServlet {
 	private WorktimeDetialService worktimeDetialService = new WorktimeDetialService();
 	private HolidayService holidayService = new HolidayService();
 
-	@RequestMapping(value = "/WorktimeDetail.do")
-	public String simple(HttpSession session, @RequestParam("action") String action) {
+	@RequestMapping(value = "/WorktimeDetail.do", method=RequestMethod.GET)
+	public String WorktimeDetailCtrl(HttpSession session, @RequestParam("action") String action) {
 
 		// request.setCharacterEncoding("utf-8");
 		// String action = request.getParameter("action");
@@ -54,8 +54,8 @@ public class WorktimeDetailServlet {
 			return "forword:/WorktimeDetail.doSearchDetailWorktime";
 
 		case "checkWorktimeDetail_page":
-			// page = doShowcheckWorktimeDetail(request);
-			// break;
+//			 page = doShowcheckWorktimeDetail(request);
+//			 break;
 			return "forword:/WorktimeDetail.doShowcheckWorktimeDetail";
 
 		/**************************** 以下彥儒 ***************************/
