@@ -31,14 +31,13 @@ public class ForgetPwdCtl {
 	@RequestMapping(value="/ForgetPwd.do",method=RequestMethod.POST)
 	public String simple(HttpSession session,Model model,
 			@RequestParam("empno")String empno,@RequestParam("id")String id) {
-//		request.removeAttribute("result");
+
 		Boolean result = false;
 
 		String path = FORGET_PWD_PAGE;
 
 		Map<String, String> errorMsgs = new HashMap<>();
-//		String empno = request.getParameter("empno");
-//		String id = request.getParameter("id").toUpperCase();
+
 		id=id.toUpperCase();
 		model.addAttribute("empno", empno);
 		model.addAttribute("id", id);
@@ -48,14 +47,14 @@ public class ForgetPwdCtl {
 		if (!employeeService.hasEmp(empno)) {
 			errorMsgs.put("error_empno", "員編不存在");
 			model.addAttribute("errorMsgs", errorMsgs);
-//			request.getRequestDispatcher(path).forward(request, response);
+
 			return path;
 		}
 		// 是否此員編已啟用
 		if (!employeeService.isStartedEmp(empno)) {
 			errorMsgs.put("error_empno", "此員編未啟用");
 			model.addAttribute("errorMsgs", errorMsgs);
-//			request.getRequestDispatcher(path).forward(request, response);
+
 			return path;
 		}
 
@@ -65,7 +64,6 @@ public class ForgetPwdCtl {
 			errorMsgs.put("error_id", "身分證不相符");
 			model.addAttribute("errorMsgs", errorMsgs);
 
-//			request.getRequestDispatcher(path).forward(request, response);
 			return path;
 		}
 
@@ -121,9 +119,7 @@ public class ForgetPwdCtl {
 		}
 		result = true;
 		model.addAttribute("result", result);
-//		model.removeAttribute("empno");
-//		model.removeAttribute("id");
-//		request.getRequestDispatcher(FORGET_PWD_PAGE).forward(request, response);
+
 		return path;
 	}
 

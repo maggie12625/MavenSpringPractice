@@ -18,7 +18,6 @@ import javax.mail.internet.AddressException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,10 +61,23 @@ public class EmployeeServletCtl {
 
 	@RequestMapping(value = "/Employee.do")
 	public String simple(Model model, HttpSession session, HttpServletRequest request,
-			@RequestParam("action") String action) {
-		// request.setCharacterEncoding("utf-8");
-		// String action =request.getParameter("action");
-		String doSomething = null;
+			@RequestParam(required = false, value = "action") String action,
+			@RequestParam(required = false, value = "name") String name,
+			@RequestParam(required = false, value = "id") String id,
+			@RequestParam(required = false, value = "positionME") String position,
+			@RequestParam(required = false, value = "positionSys") String positionS,
+			@RequestParam(required = false, value = "email") String email,
+			@RequestParam(required = false, value = "end") String end,
+			@RequestParam(required = false, value = "old_pw") String old_password,
+			@RequestParam(required = false, value = "user-pwd-input") String new_password,
+			@RequestParam(required = false, value = "user_pwd_again") String new_again_password,
+			@RequestParam(required = false, value = "page") String pageNum,
+			@RequestParam(required = false, value = "by") String searchBy,
+			@RequestParam(required = false, value = "keyword") String keyword,
+			@RequestParam(required = false, value = "input") String input,
+			@RequestParam(required = false, value = "modifyempno") String modifyempno) {
+
+		String page = null;
 
 		if (session.getAttribute("login") == null) {
 			return "forward:/Logout.do";
@@ -74,132 +86,95 @@ public class EmployeeServletCtl {
 		switch (action) {
 		case "info":
 			// 轉交至個人資料畫面
-			// page = doFindPersonalInfo(request);
-			// break;
-			doSomething = "forward:/Employee.doFindPersonalInfo";
+			page = doFindPersonalInfo(model, session);
 			break;
 		// 轉交至變更密碼頁面
 		case "changPwd_page":
-			// page = CHANGE_PASSWORD_PAGE;
-			// break;
-			doSomething = CHANGE_PASSWORD_PAGE;
+			page = CHANGE_PASSWORD_PAGE;
 			break;
 		// 進行變更密碼
 		case "changPwd":
-			// page = doChangePwd(request);
-			// break;
-			doSomething = "forward:/Employee.doChangePwd";
+			page = doChangePwd(session, model, old_password, new_password, new_again_password);
 			break;
 		/************************************ 底下彥儒 **********************************/
 		// 轉交至主管查詢頁面
 		case "mgrSearch_page":
-			// page = MGR_SEARCH_PAGE;
-			// break;
-			doSomething = MGR_SEARCH_PAGE;
+
+			page = MGR_SEARCH_PAGE;
 			break;
 		// 轉交至主管查詢員工資料頁面 ，剛進去
 		case "mgrSearchEmp_page":
 			// 這邊要改 page = MGR_SEARCH_EMP_PAGE;
-			// page = doFindEmpInfo(request);
-			// break;
-			doSomething = "forward:/Employee.doFindEmpInfo";
+			page = doFindPersonalInfo(model, session);
 			break;
 		// 轉交至主管查詢工時頁面
 		case "mgrSearchWorktime_page":
-			// page = MGR_SEARCH_WORKTIME_PAGE;
-			// break;
-			doSomething = MGR_SEARCH_WORKTIME_PAGE;
+			page = MGR_SEARCH_WORKTIME_PAGE;
 			break;
 		// 轉交至(主要)工時審核頁面
 		case "mgrManageWorktime_page":
-			// page = MGR_MANAGE_WORKTIME_PAGE;
-			// break;
-			doSomething = MGR_MANAGE_WORKTIME_PAGE;
+			page = MGR_MANAGE_WORKTIME_PAGE;
 			break;
 		// 轉交至工時催繳頁面
 		case "callWorktime_page":
-			// page = MGR_CALL_WORKTIME_PAGE;
-			// break;
-			doSomething = MGR_CALL_WORKTIME_PAGE;
+			page = MGR_CALL_WORKTIME_PAGE;
 			break;
 		// 搜尋員工
 		case "search_employee":
-			// doSearchEmployee(request);
-			// page = MGR_SEARCH_EMP_PAGE;
-			// break;
-			doSomething = "forward:/Employee.doSearchEmployee";
+			doSearchEmployee(model, request, pageNum, searchBy, keyword);
+			page = MGR_SEARCH_EMP_PAGE;
 			break;
 		/********************** 以上彥儒 **********************************/
 
 		/********************************** 以下吳軒穎 *****************************************/
 		// 轉交至員工管理頁面
 		case "empManage_page":
-			// page = EMP_MANAGE_PAGE;
-			// break;
-			doSomething = EMP_MANAGE_PAGE;
+			page = EMP_MANAGE_PAGE;
 			break;
 		case "addEmp":
-			// page = doAddEmp(request);
-			// break;
-			doSomething = "forward:/Employee.doAddEmp";
+			page = doAddEmp(session);
 			break;
 		case "validateInsertEmp":
-			// page = doValidateInsertEmp(request);
-			// break;
-			doSomething = "forward:/Employee.doValidateInsertEmp";
+			page = doValidateInsertEmp(session, model, name, id, position, positionS, email);
 			break;
 		case "insertEmp":
-			// page = doInsertEmp(request);
-			// break;
-			doSomething = "forward:/Employee.doInsertEmp";
+			page = doInsertEmp(session, request, model);
 			break;
 		/********************************** 以上吳軒穎 *****************************************/
 
 		/********************************** 以下張芷瑄 *****************************************/
 		// 轉到修改員工頁面
 		case "updateEmp_page":
-			// page = UPDATE_EMP_PAGE;
-			// break;
-			doSomething = UPDATE_EMP_PAGE;
+			page = UPDATE_EMP_PAGE;
 			break;
 		// 取得被修改的人
 		case "FindUpdateEmp":
-			// page = doFindUpdateEmp(request);
-			// break;
-			doSomething = "forward:/Employee.doFindUpdateEmp";
+			page = doFindUpdateEmp(model, session, request, input, pageNum, searchBy);
 			break;
 		// 動作：取得確定修改的人的資訊
 		// 目的：修改
 		case "updateEmp_page1":
-			// page = doFindModifyInfo(request);
-			// break;
-			doSomething = "forward:/Employee.doFindModifyInfo";
+			page = doFindModifyInfo(session, modifyempno);
 			break;
 		// 驗證修改資料
 		case "validateModifyEmp":
-			// page = doValidateModifyEmp(request);
-			// break;
-			doSomething = "forward:/Employee.doValidateModifyEmp";
+			page = doValidateModifyEmp(session, model, name, id, position, positionS, email, end);
 			break;
 		// 取消
 		case "cancel":
-			// page = UPDATE_EMP_PAGE1;
-			// break;
-			doSomething = UPDATE_EMP_PAGE1;
+			page = UPDATE_EMP_PAGE1;
 			break;
 		// 更新修改資料
 		case "doUpdateEmpInfo":
-			// page = doUpdateEmpInfo(request);
-			// break;
-			doSomething = "forward:/Employee.doUpdateEmpInfo";
+			page = doUpdateEmpInfo(session, model);
 			break;
 		/********************************** 以上張芷瑄 *****************************************/
 		default:
 			System.out.println("error");
-			doSomething = "./main";
+			page = "./main";
 		}
 
-		return doSomething;
+		return page;
 	}
 
 	@RequestMapping("Employee.doFindPersonalInfo")
@@ -212,18 +187,14 @@ public class EmployeeServletCtl {
 	}
 
 	@RequestMapping(value = "Employee.doChangePwd", method = RequestMethod.POST)
-	private String doChangePwd(HttpSession session, Model model, @RequestParam("old_pw") String old_password,
-			@RequestParam("user-pwd-input") String new_password,
-			@RequestParam("user_pwd_again") String new_again_password) {
-		// request.removeAttribute("user-pwd-input");
+	private String doChangePwd(HttpSession session, Model model, String old_password, String new_password,
+			String new_again_password) {
+
 		Map<String, String> errorMsgs = new HashMap<>();
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
 		String empNo = loginInfo.get("empno");
 		Employee empVO = employeeService.getPersonalInfo(empNo);
 
-		// String old_password = request.getParameter("old_pw");
-		// String new_password = request.getParameter("user-pwd-input");
-		// String new_again_password = request.getParameter("user_pwd_again");
 		System.out.println("舊密碼: " + old_password + " 新密碼: " + new_password + " 第2次新密碼: " + new_again_password);
 		empVO.setPassword(old_password);
 
@@ -273,7 +244,7 @@ public class EmployeeServletCtl {
 	/********************************** 以下彥儒 ************************************/
 	@RequestMapping("Employee.doFindEmpInfo")
 	private String doFindEmpInfo(@RequestParam(value = "page", required = false) String pageNum,
-			HttpServletRequest request, Model model,HttpSession session) {
+			HttpServletRequest request, Model model, HttpSession session) {
 		if (session.getAttribute("login") == null) {
 			return "forward:/Logout.do";
 		}
@@ -295,10 +266,8 @@ public class EmployeeServletCtl {
 	}
 
 	@RequestMapping(value = "Employee.doSearchEmployee")
-	private String doSearchEmployee(Model model, HttpServletRequest request,
-			@RequestParam(value = "page", required = false) String pageNum, @RequestParam("by") String searchBy,
-			@RequestParam("keyword") String keyword) {
-
+	private String doSearchEmployee(Model model, HttpServletRequest request, String pageNum, String searchBy,
+			String keyword) {
 		Page page = new Page();
 		if (pageNum != null) {
 			page.setNowPage(Integer.parseInt(pageNum));
@@ -324,7 +293,6 @@ public class EmployeeServletCtl {
 		model.addAttribute("empInfoList", empSearch);
 
 		return MGR_SEARCH_EMP_PAGE;
-		
 
 	}
 
@@ -341,21 +309,12 @@ public class EmployeeServletCtl {
 	}
 
 	@RequestMapping(value = "Employee.doValidateInsertEmp", method = RequestMethod.POST)
-	private String doValidateInsertEmp(HttpSession session, Model model, @RequestParam("name") String name,
-			@RequestParam("id") String id, @RequestParam("positionME") String position,
-			@RequestParam(value = "positionSys", required = false) String positionS,
-			@RequestParam("email") String email) {
+	private String doValidateInsertEmp(HttpSession session, Model model, String name, String id, String position,
+			String positionS, String email) {
 		// TODO Auto-generated method stub
 		// request.removeAttribute("result");
 
 		Map<String, String> errorMsgs = new HashMap<>();
-		// String name, id, position, positionS, email;
-		// name = request.getParameter("name");
-		//
-		// id = request.getParameter("id");
-		// position = request.getParameter("positionME");
-		// positionS = request.getParameter("positionSys");
-		// email = request.getParameter("email");
 
 		session.setAttribute("name", name.trim());
 		session.setAttribute("id", id);
@@ -470,9 +429,8 @@ public class EmployeeServletCtl {
 
 	/********************************** 以下張芷瑄 *****************************************/
 	@RequestMapping(value = "Employee.doFindUpdateEmp")
-	private String doFindUpdateEmp(Model model, HttpSession session, HttpServletRequest request,
-			@RequestParam("input") String input, @RequestParam(value = "page", required = false) String pageNum,
-			@RequestParam("by") String by) {
+	private String doFindUpdateEmp(Model model, HttpSession session, HttpServletRequest request, String input,
+			String pageNum, String by) {
 		if (session.getAttribute("login") == null) {
 			return "forward:/Logout.do";
 		}
@@ -504,7 +462,7 @@ public class EmployeeServletCtl {
 	private String doFindModifyInfo(HttpSession session, @RequestParam("modifyempno") String modifyempno) {
 		session.removeAttribute("UpdateEmpInfoList");
 		// Selectempno放確定修改的人的empno
-		// String Selectempno = request.getParameter("modifyempno");
+
 		employeeService.findModifyEmpInfo(modifyempno);
 		session.setAttribute("Empno", modifyempno);
 
@@ -515,28 +473,12 @@ public class EmployeeServletCtl {
 
 	}
 
-	//
-	// private void cancel(HttpServletRequest request) {
-	// // TODO Auto-generated method stub
-	//
-	// }
 	@RequestMapping(value = "Employee.doValidateModifyEmp", method = RequestMethod.POST)
-	private String doValidateModifyEmp(HttpSession session, Model model, @RequestParam("name") String name,
-			@RequestParam("id") String id, @RequestParam("positionME") String position,
-			@RequestParam(value = "positionSys", required = false) String positionS,
-			@RequestParam("email") String email, @RequestParam("end") String end) {
+	private String doValidateModifyEmp(HttpSession session, Model model, String name, String id, String position,
+			String positionS, String email, String end) {
 		// TODO Auto-generated method stub
 
 		Map<String, String> errorMsgs = new HashMap<>();
-
-		// 先暫存
-		// String name, id, position, positionS, email, end;
-		// name = request.getParameter("name");
-		// id = request.getParameter("id");
-		// position = request.getParameter("positionME");
-		// positionS = request.getParameter("positionSys");
-		// email = request.getParameter("email");
-		// end = request.getParameter("end");
 
 		Map<String, String> modifyInfo = new HashMap<>();
 		modifyInfo.put("name", name.trim());
