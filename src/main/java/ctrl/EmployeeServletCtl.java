@@ -99,13 +99,12 @@ public class EmployeeServletCtl {
 		/************************************ 底下彥儒 **********************************/
 		// 轉交至主管查詢頁面
 		case "mgrSearch_page":
-
 			page = MGR_SEARCH_PAGE;
 			break;
 		// 轉交至主管查詢員工資料頁面 ，剛進去
 		case "mgrSearchEmp_page":
 			// 這邊要改 page = MGR_SEARCH_EMP_PAGE;
-			page = doFindPersonalInfo(model, session);
+			page = doFindEmpInfo(pageNum,request,model,session);
 			break;
 		// 轉交至主管查詢工時頁面
 		case "mgrSearchWorktime_page":
@@ -173,11 +172,9 @@ public class EmployeeServletCtl {
 			System.out.println("error");
 			page = "./main";
 		}
-
 		return page;
 	}
 
-	@RequestMapping("Employee.doFindPersonalInfo")
 	private String doFindPersonalInfo(Model model, HttpSession session) {
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
 		String empNo = loginInfo.get("empno");
@@ -186,10 +183,9 @@ public class EmployeeServletCtl {
 		return INFO_PAGE;
 	}
 
-	@RequestMapping(value = "Employee.doChangePwd", method = RequestMethod.POST)
+
 	private String doChangePwd(HttpSession session, Model model, String old_password, String new_password,
 			String new_again_password) {
-
 		Map<String, String> errorMsgs = new HashMap<>();
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
 		String empNo = loginInfo.get("empno");
@@ -242,12 +238,9 @@ public class EmployeeServletCtl {
 	}
 
 	/********************************** 以下彥儒 ************************************/
-	@RequestMapping("Employee.doFindEmpInfo")
-	private String doFindEmpInfo(@RequestParam(value = "page", required = false) String pageNum,
-			HttpServletRequest request, Model model, HttpSession session) {
-		if (session.getAttribute("login") == null) {
-			return "forward:/Logout.do";
-		}
+
+	private String doFindEmpInfo(String pageNum,HttpServletRequest request,Model model,
+			HttpSession session) {
 		Page page = new Page();
 		if (pageNum != null) {
 			page.setNowPage(Integer.parseInt(pageNum));
@@ -265,7 +258,7 @@ public class EmployeeServletCtl {
 		return MGR_SEARCH_EMP_PAGE;
 	}
 
-	@RequestMapping(value = "Employee.doSearchEmployee")
+
 	private String doSearchEmployee(Model model, HttpServletRequest request, String pageNum, String searchBy,
 			String keyword) {
 		Page page = new Page();
@@ -299,7 +292,7 @@ public class EmployeeServletCtl {
 	/********************************** 以上彥儒 ************************************/
 
 	/********************************** 以下吳軒穎 *****************************************/
-	@RequestMapping("Employee.doAddEmp")
+
 	private String doAddEmp(HttpSession session) {
 		// TODO Auto-generated method stub
 		String maxEmpNo = employeeService.getMaxEmpNoNext();
@@ -308,7 +301,7 @@ public class EmployeeServletCtl {
 		return ADD_EMP_PAGE;
 	}
 
-	@RequestMapping(value = "Employee.doValidateInsertEmp", method = RequestMethod.POST)
+
 	private String doValidateInsertEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email) {
 		// TODO Auto-generated method stub
@@ -357,7 +350,7 @@ public class EmployeeServletCtl {
 		return ADD_EMP_PAGE1;
 	}
 
-	@RequestMapping(value = "Employee.doInsertEmp", method = RequestMethod.POST)
+
 	private String doInsertEmp(HttpSession session, HttpServletRequest request, Model model) {
 		// TODO Auto-generated method stub
 		Employee emp = new Employee();
@@ -422,19 +415,15 @@ public class EmployeeServletCtl {
 		session.removeAttribute("name");
 
 		model.addAttribute("result", true);
-		return "forward:/Employee.doAddEmp";
+		return doAddEmp(session);
 	}
 
 	/********************************** 以上吳軒穎 *****************************************/
 
 	/********************************** 以下張芷瑄 *****************************************/
-	@RequestMapping(value = "Employee.doFindUpdateEmp")
+
 	private String doFindUpdateEmp(Model model, HttpSession session, HttpServletRequest request, String input,
 			String pageNum, String by) {
-		if (session.getAttribute("login") == null) {
-			return "forward:/Logout.do";
-		}
-
 		model.addAttribute("NotFirst", true);
 		model.addAttribute("Search", input);
 
@@ -458,8 +447,8 @@ public class EmployeeServletCtl {
 		return UPDATE_EMP_PAGE;
 	}
 
-	@RequestMapping("Employee.doFindModifyInfo")
-	private String doFindModifyInfo(HttpSession session, @RequestParam("modifyempno") String modifyempno) {
+
+	private String doFindModifyInfo(HttpSession session,String modifyempno) {
 		session.removeAttribute("UpdateEmpInfoList");
 		// Selectempno放確定修改的人的empno
 
@@ -473,7 +462,7 @@ public class EmployeeServletCtl {
 
 	}
 
-	@RequestMapping(value = "Employee.doValidateModifyEmp", method = RequestMethod.POST)
+	
 	private String doValidateModifyEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email, String end) {
 		// TODO Auto-generated method stub
@@ -526,7 +515,7 @@ public class EmployeeServletCtl {
 		return UPDATE_EMP_PAGE2; // 不能修改的畫面
 	}
 
-	@RequestMapping(value = "Employee.doUpdateEmpInfo", method = RequestMethod.POST)
+	
 	private String doUpdateEmpInfo(HttpSession session, Model model) {
 
 		Employee emp = new Employee();
