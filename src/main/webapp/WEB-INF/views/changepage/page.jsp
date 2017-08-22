@@ -36,7 +36,7 @@
 		<c:if
 			test="${requestScope.page.nowPage<requestScope.page.pagesCount-2}">
 			<li><a
-				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage -1}">&rsaquo;</a>
+				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage +1}">&rsaquo;</a>
 			</li>
 			<li><a
 				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.pagesCount}">&raquo;</a>
