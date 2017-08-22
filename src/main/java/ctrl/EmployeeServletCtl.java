@@ -175,7 +175,7 @@ public class EmployeeServletCtl {
 		return page;
 	}
 
-	private String doFindPersonalInfo(Model model, HttpSession session) {
+	protected String doFindPersonalInfo(Model model, HttpSession session) {
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
 		String empNo = loginInfo.get("empno");
 		Employee empVO = employeeService.getPersonalInfo(empNo);
@@ -184,7 +184,7 @@ public class EmployeeServletCtl {
 	}
 
 
-	private String doChangePwd(HttpSession session, Model model, String old_password, String new_password,
+	protected String doChangePwd(HttpSession session, Model model, String old_password, String new_password,
 			String new_again_password) {
 		Map<String, String> errorMsgs = new HashMap<>();
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
@@ -239,7 +239,7 @@ public class EmployeeServletCtl {
 
 	/********************************** 以下彥儒 ************************************/
 
-	private String doFindEmpInfo(String pageNum,HttpServletRequest request,Model model,
+	protected String doFindEmpInfo(String pageNum,HttpServletRequest request,Model model,
 			HttpSession session) {
 		Page page = new Page();
 		if (pageNum != null) {
@@ -259,7 +259,7 @@ public class EmployeeServletCtl {
 	}
 
 
-	private String doSearchEmployee(Model model, HttpServletRequest request, String pageNum, String searchBy,
+	protected String doSearchEmployee(Model model, HttpServletRequest request, String pageNum, String searchBy,
 			String keyword) {
 		Page page = new Page();
 		if (pageNum != null) {
@@ -293,7 +293,7 @@ public class EmployeeServletCtl {
 
 	/********************************** 以下吳軒穎 *****************************************/
 
-	private String doAddEmp(HttpSession session) {
+	protected String doAddEmp(HttpSession session) {
 		// TODO Auto-generated method stub
 		String maxEmpNo = employeeService.getMaxEmpNoNext();
 		session.setAttribute("maxEmpNo", maxEmpNo);
@@ -302,7 +302,7 @@ public class EmployeeServletCtl {
 	}
 
 
-	private String doValidateInsertEmp(HttpSession session, Model model, String name, String id, String position,
+	protected String doValidateInsertEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email) {
 		// TODO Auto-generated method stub
 		// request.removeAttribute("result");
@@ -351,7 +351,7 @@ public class EmployeeServletCtl {
 	}
 
 
-	private String doInsertEmp(HttpSession session, HttpServletRequest request, Model model) {
+	protected String doInsertEmp(HttpSession session, HttpServletRequest request, Model model) {
 		// TODO Auto-generated method stub
 		Employee emp = new Employee();
 
@@ -422,7 +422,7 @@ public class EmployeeServletCtl {
 
 	/********************************** 以下張芷瑄 *****************************************/
 
-	private String doFindUpdateEmp(Model model, HttpSession session, HttpServletRequest request, String input,
+	protected String doFindUpdateEmp(Model model, HttpSession session, HttpServletRequest request, String input,
 			String pageNum, String by) {
 		model.addAttribute("NotFirst", true);
 		model.addAttribute("Search", input);
@@ -448,7 +448,7 @@ public class EmployeeServletCtl {
 	}
 
 
-	private String doFindModifyInfo(HttpSession session,String modifyempno) {
+	protected String doFindModifyInfo(HttpSession session,String modifyempno) {
 		session.removeAttribute("UpdateEmpInfoList");
 		// Selectempno放確定修改的人的empno
 
@@ -463,7 +463,7 @@ public class EmployeeServletCtl {
 	}
 
 	
-	private String doValidateModifyEmp(HttpSession session, Model model, String name, String id, String position,
+	protected String doValidateModifyEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email, String end) {
 		// TODO Auto-generated method stub
 
@@ -516,7 +516,7 @@ public class EmployeeServletCtl {
 	}
 
 	
-	private String doUpdateEmpInfo(HttpSession session, Model model) {
+	protected String doUpdateEmpInfo(HttpSession session, Model model) {
 
 		Employee emp = new Employee();
 
