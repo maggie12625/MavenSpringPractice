@@ -97,7 +97,7 @@
 <!-- 		<servlet-name>EmployeeServlet</servlet-name> -->
 <!-- 		<url-pattern>/Employee.do</url-pattern> -->
 <!-- 	</servlet-mapping> -->
-	<servlet>
+<!-- 	<servlet>
 		<description></description>
 		<display-name>HolidayServlet</display-name>
 		<servlet-name>HolidayServlet</servlet-name>
@@ -106,7 +106,7 @@
 	<servlet-mapping>
 		<servlet-name>HolidayServlet</servlet-name>
 		<url-pattern>/Holiday.do</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 	<servlet>
 		<description></description>
 		<display-name>WorktimeServlet</display-name>
@@ -137,7 +137,7 @@
 <!-- 		<servlet-name>ForgetPwd</servlet-name> -->
 <!-- 		<url-pattern>/ForgetPwd.do</url-pattern> -->
 <!-- 	</servlet-mapping> -->
-	<servlet>
+	<!-- <servlet>
 		<description></description>
 		<display-name>StartEmployee</display-name>
 		<servlet-name>StartEmployee</servlet-name>
@@ -146,5 +146,5 @@
 	<servlet-mapping>
 		<servlet-name>StartEmployee</servlet-name>
 		<url-pattern>/StartEmployee.do</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 </web-app>
