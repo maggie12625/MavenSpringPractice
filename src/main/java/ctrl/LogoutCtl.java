@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LogoutCtl {
-	
 	@RequestMapping(value="/Logout.do")
 	public String simple(HttpSession session) {
 //		StringBuilder logout = new StringBuilder();

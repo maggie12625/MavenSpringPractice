@@ -22,8 +22,8 @@ public class LoginCtl {
 	private static final String ERROR_PAGE = "login";
 	
 	@RequestMapping(value="/Login.do",method=RequestMethod.POST)
-	public   String simple(@RequestParam(required = false, value = "id") String id,
-			@RequestParam(required = false, value = "password") String password ,Model model,HttpSession session) {
+	public   String simple(@RequestParam(value = "id") String id,
+			@RequestParam(value = "password") String password ,Model model,HttpSession session) {
 		List<String> errorMsgs = new ArrayList<String>();
 		Employee employee = new Employee();
 		employee.setEmpno(id);
