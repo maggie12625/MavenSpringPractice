@@ -45,7 +45,7 @@ public class EmailService {
 		props.setProperty("mail.smtp.auth", "true");
 		this.session = Session.getDefaultInstance(props, new Authenticator() {
 			protected PasswordAuthentication getPasswordAuthentication() {
-				// 這定寄送的照號密碼
+				// 這定寄送的帳號密碼
 				return new PasswordAuthentication("FJUT5EmailSystem@gmail.com", "fjut5system");
 			}
 		});

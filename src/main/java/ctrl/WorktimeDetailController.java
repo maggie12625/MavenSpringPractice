@@ -65,11 +65,13 @@ public class WorktimeDetailController extends HttpServlet {
 			page = doSearchDetailWorktime(loginInfo,date ,id,model);
 			break;
 
+		//post
 		case "checkWorktimeDetail_page":
 			page = doShowcheckWorktimeDetail(id,date,pageAction,model);
 			break;
 
 		/**************************** 以下彥儒 ***************************/
+		//post
 		case "checkDetail_page":
 			page = doCheckWorktime( id,  firstDay,  
 					status, reason,  kind,pageAction,model);

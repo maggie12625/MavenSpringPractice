@@ -4,17 +4,20 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.ui.Model;
 
 import utils.PageResultSet;
 
-public class Page {
+public class Page2 {
 
-	public Page() {
+	public Page2() {
 		// TODO 自動產生的建構子 Stub
 	}
 
-	public Page(PageResultSet pRs) {
+	public Page2(PageResultSet pRs) {
 		this.pagesCount = pRs.getPageCount();
 		this.rowsCount = pRs.getRowsCount();
 		this.nowPage = pRs.getNowPage();
@@ -74,12 +77,12 @@ public class Page {
 		this.pageRowsCount = pageRowsCount;
 	}
 
-	public void setAction(HttpServletRequest request) {
+	public void setAction2(Model model) {
 		StringBuilder uri = new StringBuilder();
 		
-		uri.append(request.getContextPath());
-		uri.append(request.getServletPath() + "?");
-		Enumeration enumeration = request.getParameterNames();
+		uri.append(((HttpServletRequest) model).getContextPath());
+		uri.append(((HttpServletRequest) model).getServletPath() + "?");
+		Enumeration enumeration = ((ServletRequest) model).getParameterNames();
 		while (enumeration.hasMoreElements()) {
 			String parameter = (String) enumeration.nextElement();
 			if (parameter.equals("page"))
@@ -96,7 +99,7 @@ public class Page {
 //			}
 //			
 //			value=new String(value);
-			uri.append(request.getParameter(parameter));
+			uri.append(((ServletRequest) model).getParameter(parameter));
 			uri.append("&");
 		}
 
