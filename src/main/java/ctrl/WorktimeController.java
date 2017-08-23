@@ -255,7 +255,7 @@ public class WorktimeController extends HttpServlet {
 	 */
 
 	/************************************** 以下張芷瑄 ************************************/
-	private String getUnsubmitEmp(HttpServletRequest request, String pageNum) {
+	protected String getUnsubmitEmp(HttpServletRequest request, String pageNum) {
 		Map<String, Object> dataMap = null;
 		List<Map<String, String>> UnsubmitEmpList = null;
 		Page page = new Page();
@@ -275,7 +275,7 @@ public class WorktimeController extends HttpServlet {
 		return CAllWORKTIME_PAGE;
 	}
 
-	private String checkBoxEvent(String[] datas, HttpServletRequest request, Model model, String pageNum) {
+	protected String checkBoxEvent(String[] datas, HttpServletRequest request, Model model, String pageNum) {
 		Page page = new Page();
 		if (pageNum != null) {
 			page.setNowPage(Integer.parseInt(pageNum));
@@ -330,7 +330,7 @@ public class WorktimeController extends HttpServlet {
 
 	}
 
-	private String selectAllEmp(Model model, HttpServletRequest request, String pageNum) {
+	protected String selectAllEmp(Model model, HttpServletRequest request, String pageNum) {
 
 		Map<String, Object> dataMap = null;
 		List<Map<String, String>> allMapEmpList = null;
@@ -411,7 +411,7 @@ public class WorktimeController extends HttpServlet {
 	}
 
 	// 取得填寫詳細工時
-	private String doGetEmpWorktimeDetail(HttpSession session, Model model, String firstday) {
+	protected String doGetEmpWorktimeDetail(HttpSession session, Model model, String firstday) {
 		Map<String, Holiday> holidays = new HashMap<String, Holiday>();
 		Map<String, String> attribute = (Map<String, String>) session.getAttribute("login");
 		Map<String, String> loginInfo = attribute;
@@ -436,7 +436,7 @@ public class WorktimeController extends HttpServlet {
 		return WRITEWORKTIME_SUB_PAGE;
 	}
 
-	private String doMgrGetEmpWorktime(HttpServletRequest request, Model model, String keyword, String yearMonth,
+	protected String doMgrGetEmpWorktime(HttpServletRequest request, Model model, String keyword, String yearMonth,
 			String pageNum) throws ParseException {
 		model.addAttribute("hadVisited", true);
 
@@ -481,7 +481,7 @@ public class WorktimeController extends HttpServlet {
 		return MGR_SEARCH_WORKTIME_PAGE;
 	}
 
-	private String doSaveDetailWorktime(String[] workNames, String sunNormal, String sunOver, String monNormal,
+	protected String doSaveDetailWorktime(String[] workNames, String sunNormal, String sunOver, String monNormal,
 			String monOver, String tueNormal, String tueOver, String wedNormal, String wedOver, String thuNormal,
 			String thuOver, String friOver, String friNormal, String satOver, String satNormal, String[] workContents,
 			HttpServletRequest request, String doSomething, String firstday, Model model, HttpSession session) {
@@ -603,7 +603,7 @@ public class WorktimeController extends HttpServlet {
 		return WRITEWORKTIME_SUB_PAGE;
 	}
 
-	private void doExporWorktime(String yearMonth, String keyword, HttpServletRequest request,
+	protected void doExporWorktime(String yearMonth, String keyword, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		// String yearMonth = "";
@@ -613,8 +613,8 @@ public class WorktimeController extends HttpServlet {
 		// if (request.getParameter("keyword") != null)
 		// keyword = request.getParameter("keyword");
 
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("application/ms-excel");
+//		response.setCharacterEncoding("utf-8");
+//		response.setContentType("application/ms-excel");
 
 		String fileName = (yearMonth.equals("") ? "至今" : yearMonth) + "工時報表";
 		try {
@@ -638,7 +638,7 @@ public class WorktimeController extends HttpServlet {
 
 	}
 
-	private void doExporWorktimeByEmail(HttpServletResponse response, HttpSession session, String yearMonth,
+	protected void doExporWorktimeByEmail(HttpServletResponse response, HttpSession session, String yearMonth,
 			String keyword, HttpServletRequest request) {
 		// String yearMonth = "";
 		// String keyword = "";
@@ -669,7 +669,7 @@ public class WorktimeController extends HttpServlet {
 	/************************************** 以上陳民錞 ************************************/
 
 	/************************************** 以下彥儒 ************************************/
-	private String doCheckWorktime(String pageNum, Model model, HttpServletRequest request) {
+	protected String doCheckWorktime(String pageNum, Model model, HttpServletRequest request) {
 		Map<String, Holiday> holidays = new HashMap<String, Holiday>();
 		List<Worktime> worktime = new ArrayList<Worktime>();
 		Page page = new Page();
@@ -692,7 +692,7 @@ public class WorktimeController extends HttpServlet {
 		return CHECKWORKTIME_PAGE;
 	}
 
-	private void doSearchWorktime(HttpServletRequest request, Model model, String pageNum, String searchBy,
+	protected void doSearchWorktime(HttpServletRequest request, Model model, String pageNum, String searchBy,
 			String keyword, String dateAndWeek) {
 		Map<String, Holiday> holidays = new HashMap<String, Holiday>();
 		Map<String, Object> dataMap = null;
@@ -730,7 +730,7 @@ public class WorktimeController extends HttpServlet {
 
 	}
 
-	private String doCheckbox(HttpServletRequest request, String pageAction, Model model) {
+	protected String doCheckbox(HttpServletRequest request, String pageAction, Model model) {
 		String[] detailIds = request.getParameterValues("detailId");
 
 		for (int i = 0; i < detailIds.length; i++) {
@@ -750,7 +750,7 @@ public class WorktimeController extends HttpServlet {
 	/************************************** 以上彥儒 ************************************/
 
 	/************************************** 以下吳軒穎 ************************************/
-	private String enterEmpWorktime(Model model) {
+	protected String enterEmpWorktime(Model model) {
 		// TODO Auto-generated method stub
 		Date date = new Date(new java.util.Date().getTime());
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
@@ -760,7 +760,7 @@ public class WorktimeController extends HttpServlet {
 		return SEARCH_WORKTIME_EMP_PAGE;
 	}
 
-	private String doSearchEmpWorktime(Model model, HttpSession session, String searchDate) {
+	protected String doSearchEmpWorktime(Model model, HttpSession session, String searchDate) {
 		model.addAttribute("notfirst", true);
 		Map<String, Holiday> holidays = new HashMap<String, Holiday>();
 		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
