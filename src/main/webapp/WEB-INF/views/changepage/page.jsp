@@ -35,8 +35,13 @@
 		</c:if>
 		<c:if
 			test="${requestScope.page.nowPage<requestScope.page.pagesCount-2}">
+<<<<<<< HEAD
 			<li><a
 				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage +1}">&rsaquo;</a>
+=======
+			<li><a
+				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage +1}">&rsaquo;</a>
+>>>>>>> branch 'master' of https://github.com/maggie12625/bbb.git
 			</li>
 			<li><a
 				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.pagesCount}">&raquo;</a>

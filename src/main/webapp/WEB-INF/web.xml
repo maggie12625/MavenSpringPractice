@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-      version="3.0">
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
 	<display-name>FJUT5_3_Worktime</display-name>
 	<welcome-file-list>
 		<welcome-file>login.jsp</welcome-file>
@@ -87,17 +86,17 @@
 	<!-- <servlet-name>Logout</servlet-name> -->
 	<!-- <url-pattern>/Logout.do</url-pattern> -->
 	<!-- </servlet-mapping> -->
-<!-- 	<servlet> -->
-<!-- 		<description></description> -->
-<!-- 		<display-name>EmployeeServlet</display-name> -->
-<!-- 		<servlet-name>EmployeeServlet</servlet-name> -->
-<!-- 		<servlet-class>controller.EmployeeServlet</servlet-class> -->
-<!-- 	</servlet> -->
-<!-- 	<servlet-mapping> -->
-<!-- 		<servlet-name>EmployeeServlet</servlet-name> -->
-<!-- 		<url-pattern>/Employee.do</url-pattern> -->
-<!-- 	</servlet-mapping>  -->
-<!-- 	<servlet>
+	<!-- <servlet> -->
+	<!-- <description></description> -->
+	<!-- <display-name>EmployeeServlet</display-name> -->
+	<!-- <servlet-name>EmployeeServlet</servlet-name> -->
+	<!-- <servlet-class>controller.EmployeeServlet</servlet-class> -->
+	<!-- </servlet> -->
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>EmployeeServlet</servlet-name> -->
+	<!-- <url-pattern>/Employee.do</url-pattern> -->
+	<!-- </servlet-mapping> -->
+	<!-- <servlet>
 		<description></description>
 		<display-name>HolidayServlet</display-name>
 		<servlet-name>HolidayServlet</servlet-name>
@@ -106,7 +105,7 @@
 	<servlet-mapping>
 		<servlet-name>HolidayServlet</servlet-name>
 		<url-pattern>/Holiday.do</url-pattern>
-	</servlet-mapping>  -->
+	</servlet-mapping> -->
 	<servlet>
 		<description></description>
 		<display-name>WorktimeServlet</display-name>
@@ -127,17 +126,17 @@
 		<servlet-name>WorktimeDetailServlet</servlet-name>
 		<url-pattern>/WorktimeDetail.do</url-pattern>
 	</servlet-mapping>
-<!-- 	<servlet> -->
-<!-- 		<description></description> -->
-<!-- 		<display-name>ForgetPwd</display-name> -->
-<!-- 		<servlet-name>ForgetPwd</servlet-name> -->
-<!-- 		<servlet-class>controller.ForgetPwd</servlet-class> -->
-<!-- 	</servlet> -->
-<!-- 	<servlet-mapping> -->
-<!-- 		<servlet-name>ForgetPwd</servlet-name> -->
-<!-- 		<url-pattern>/ForgetPwd.do</url-pattern> -->
-<!-- 	</servlet-mapping> -->
-	<!-- <servlet>
+	<!-- <servlet> -->
+	<!-- <description></description> -->
+	<!-- <display-name>ForgetPwd</display-name> -->
+	<!-- <servlet-name>ForgetPwd</servlet-name> -->
+	<!-- <servlet-class>controller.ForgetPwd</servlet-class> -->
+	<!-- </servlet> -->
+	<!-- <servlet-mapping> -->
+	<!-- <servlet-name>ForgetPwd</servlet-name> -->
+	<!-- <url-pattern>/ForgetPwd.do</url-pattern> -->
+	<!-- </servlet-mapping> -->
+<!-- 	<servlet>
 		<description></description>
 		<display-name>StartEmployee</display-name>
 		<servlet-name>StartEmployee</servlet-name>

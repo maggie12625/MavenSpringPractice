@@ -59,8 +59,8 @@ public class EmployeeServletCtl {
 
 	private EmployeeService employeeService = new EmployeeService();
 
-	@RequestMapping(value = "/Employee.do")
-	public String simple(Model model, HttpSession session, HttpServletRequest request,
+	@RequestMapping(value = "/Employee.do", method = RequestMethod.POST)
+	public String doPost(Model model, HttpSession session, HttpServletRequest request,
 			@RequestParam(required = false, value = "action") String action,
 			@RequestParam(required = false, value = "name") String name,
 			@RequestParam(required = false, value = "id") String id,
@@ -74,24 +74,67 @@ public class EmployeeServletCtl {
 			@RequestParam(required = false, value = "page") String pageNum,
 			@RequestParam(required = false, value = "by") String searchBy,
 			@RequestParam(required = false, value = "keyword") String keyword,
-			@RequestParam(required = false, value = "input") String input,
-			@RequestParam(required = false, value = "modifyempno") String modifyempno) {
+			@RequestParam(required = false, value = "input") String input) {
+		String page = null;
+
+		if (session.getAttribute("login") == null) {
+			return "forward:/Logout.do";
+		}
+		System.out.println("Post:emp_action: " + action);
+		switch (action) {
+		case "validateInsertEmp":
+			page = doValidateInsertEmp(session, model, name, id, position, positionS, email);
+			break;
+		case "insertEmp":
+			page = doInsertEmp(session, request, model);
+			break;
+
+		case "validateModifyEmp":
+			page = doValidateModifyEmp(session, model, name, id, position, positionS, email, end);
+			break;
+		case "doUpdateEmpInfo":
+			page = doUpdateEmpInfo(session, model);
+			break;
+		case "changPwd":
+			page = doChangePwd(session, model, old_password, new_password, new_again_password);
+			break;
+		case "search_employee":
+			doSearchEmployee(model, request, pageNum, searchBy, keyword);
+			page = MGR_SEARCH_EMP_PAGE;
+			break;
+		case "FindUpdateEmp":
+			page = doFindUpdateEmp(model, session, request, input, pageNum, searchBy);
+			break;
+		default:
+			System.out.println("error");
+			page = "./main";
+		}
+		return page;
+	}
+
+	@RequestMapping(value = "/Employee.do", method = RequestMethod.GET)
+	public String doGet(Model model, HttpSession session, HttpServletRequest request,
+			@RequestParam(required = false, value = "action") String action,
+			@RequestParam(required = false, value = "old_pw") String old_password,
+			@RequestParam(required = false, value = "user-pwd-input") String new_password,
+			@RequestParam(required = false, value = "user_pwd_again") String new_again_password,
+			@RequestParam(required = false, value = "page") String pageNum,
+			@RequestParam(required = false, value = "modifyempno") String modifyempno,
+			@RequestParam(required = false, value = "by") String searchBy,
+			@RequestParam(required = false, value = "input") String input) {
 
 		String page = null;
 
 		if (session.getAttribute("login") == null) {
 			return "forward:/Logout.do";
 		}
-		System.out.println("emp_action: " + action);
+		System.out.println("Get:emp_action: " + action);
 		switch (action) {
 		case "info":
 			// 轉交至個人資料畫面
 			page = doFindPersonalInfo(model, session);
 			break;
-		// 轉交至變更密碼頁面
-		case "changPwd_page":
-			page = CHANGE_PASSWORD_PAGE;
-			break;
+
 		// 進行變更密碼
 		case "changPwd":
 			page = doChangePwd(session, model, old_password, new_password, new_again_password);
@@ -104,7 +147,7 @@ public class EmployeeServletCtl {
 		// 轉交至主管查詢員工資料頁面 ，剛進去
 		case "mgrSearchEmp_page":
 			// 這邊要改 page = MGR_SEARCH_EMP_PAGE;
-			page = doFindEmpInfo(pageNum,request,model,session);
+			page = doFindEmpInfo(pageNum, request, model, session);
 			break;
 		// 轉交至主管查詢工時頁面
 		case "mgrSearchWorktime_page":
@@ -118,11 +161,7 @@ public class EmployeeServletCtl {
 		case "callWorktime_page":
 			page = MGR_CALL_WORKTIME_PAGE;
 			break;
-		// 搜尋員工
-		case "search_employee":
-			doSearchEmployee(model, request, pageNum, searchBy, keyword);
-			page = MGR_SEARCH_EMP_PAGE;
-			break;
+
 		/********************** 以上彥儒 **********************************/
 
 		/********************************** 以下吳軒穎 *****************************************/
@@ -133,12 +172,7 @@ public class EmployeeServletCtl {
 		case "addEmp":
 			page = doAddEmp(session);
 			break;
-		case "validateInsertEmp":
-			page = doValidateInsertEmp(session, model, name, id, position, positionS, email);
-			break;
-		case "insertEmp":
-			page = doInsertEmp(session, request, model);
-			break;
+
 		/********************************** 以上吳軒穎 *****************************************/
 
 		/********************************** 以下張芷瑄 *****************************************/
@@ -146,26 +180,16 @@ public class EmployeeServletCtl {
 		case "updateEmp_page":
 			page = UPDATE_EMP_PAGE;
 			break;
-		// 取得被修改的人
-		case "FindUpdateEmp":
-			page = doFindUpdateEmp(model, session, request, input, pageNum, searchBy);
-			break;
-		// 動作：取得確定修改的人的資訊
-		// 目的：修改
+
 		case "updateEmp_page1":
 			page = doFindModifyInfo(session, modifyempno);
 			break;
-		// 驗證修改資料
-		case "validateModifyEmp":
-			page = doValidateModifyEmp(session, model, name, id, position, positionS, email, end);
-			break;
-		// 取消
+
 		case "cancel":
 			page = UPDATE_EMP_PAGE1;
 			break;
-		// 更新修改資料
-		case "doUpdateEmpInfo":
-			page = doUpdateEmpInfo(session, model);
+		case "FindUpdateEmp":
+			page = doFindUpdateEmp(model, session, request, input, pageNum, searchBy);
 			break;
 		/********************************** 以上張芷瑄 *****************************************/
 		default:
@@ -182,7 +206,6 @@ public class EmployeeServletCtl {
 		model.addAttribute("employee", empVO);
 		return INFO_PAGE;
 	}
-
 
 	protected String doChangePwd(HttpSession session, Model model, String old_password, String new_password,
 			String new_again_password) {
@@ -239,8 +262,7 @@ public class EmployeeServletCtl {
 
 	/********************************** 以下彥儒 ************************************/
 
-	protected String doFindEmpInfo(String pageNum,HttpServletRequest request,Model model,
-			HttpSession session) {
+	protected String doFindEmpInfo(String pageNum, HttpServletRequest request, Model model, HttpSession session) {
 		Page page = new Page();
 		if (pageNum != null) {
 			page.setNowPage(Integer.parseInt(pageNum));
@@ -257,7 +279,6 @@ public class EmployeeServletCtl {
 
 		return MGR_SEARCH_EMP_PAGE;
 	}
-
 
 	protected String doSearchEmployee(Model model, HttpServletRequest request, String pageNum, String searchBy,
 			String keyword) {
@@ -300,7 +321,6 @@ public class EmployeeServletCtl {
 
 		return ADD_EMP_PAGE;
 	}
-
 
 	protected String doValidateInsertEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email) {
@@ -349,7 +369,6 @@ public class EmployeeServletCtl {
 
 		return ADD_EMP_PAGE1;
 	}
-
 
 	protected String doInsertEmp(HttpSession session, HttpServletRequest request, Model model) {
 		// TODO Auto-generated method stub
@@ -447,8 +466,7 @@ public class EmployeeServletCtl {
 		return UPDATE_EMP_PAGE;
 	}
 
-
-	protected String doFindModifyInfo(HttpSession session,String modifyempno) {
+	protected String doFindModifyInfo(HttpSession session, String modifyempno) {
 		session.removeAttribute("UpdateEmpInfoList");
 		// Selectempno放確定修改的人的empno
 
@@ -462,7 +480,6 @@ public class EmployeeServletCtl {
 
 	}
 
-	
 	protected String doValidateModifyEmp(HttpSession session, Model model, String name, String id, String position,
 			String positionS, String email, String end) {
 		// TODO Auto-generated method stub
@@ -515,7 +532,6 @@ public class EmployeeServletCtl {
 		return UPDATE_EMP_PAGE2; // 不能修改的畫面
 	}
 
-	
 	protected String doUpdateEmpInfo(HttpSession session, Model model) {
 
 		Employee emp = new Employee();
