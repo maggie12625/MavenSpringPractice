@@ -109,7 +109,7 @@
 		<url-pattern>/Holiday.do</url-pattern>
 	</servlet-mapping>
 
-<!-- 	<servlet>
+	<!-- <servlet>
 		<description></description>
 		<display-name>WorktimeServlet</display-name>
 		<servlet-name>WorktimeServlet</servlet-name>
@@ -118,12 +118,18 @@
 	<servlet-mapping>
 		<servlet-name>WorktimeServlet</servlet-name>
 		<url-pattern>/Worktime.do</url-pattern>
-	</servlet-mapping> -->
+	</servlet-mapping>
 
-	<!-- <servlet> <description></description> <display-name>WorktimeDetailServlet</display-name> -->
-	<!-- <servlet-name>WorktimeDetailServlet</servlet-name> <servlet-class>controller.WorktimeDetailServlet</servlet-class> -->
-	<!-- </servlet> <servlet-mapping> <servlet-name>WorktimeDetailServlet</servlet-name> -->
-	<!-- <url-pattern>/WorktimeDetail.do</url-pattern> </servlet-mapping> -->
+	<servlet>
+		<description></description>
+		<display-name>WorktimeDetailServlet</display-name>
+		<servlet-name>WorktimeDetailServlet</servlet-name>
+		<servlet-class>controller.WorktimeDetailServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WorktimeDetailServlet</servlet-name>
+		<url-pattern>/WorktimeDetail.do</url-pattern>
+	</servlet-mapping>  -->
 	<servlet>
 		<description></description>
 		<display-name>ForgetPwd</display-name>

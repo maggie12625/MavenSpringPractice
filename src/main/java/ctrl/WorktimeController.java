@@ -1,6 +1,7 @@
 package ctrl;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Date;
 import java.text.ParseException;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import model.Employee;
 import model.Holiday;
@@ -37,7 +39,7 @@ import service.EmployeeService;
 import service.HolidayService;
 import service.WorktimeDetialService;
 import service.WorktimeService;
-import service.excelService;
+import service.ExcelService;
 import utils.ValidateUtils;
 
 /**
@@ -73,11 +75,43 @@ public class WorktimeController extends HttpServlet {
 	private WorktimeDetialService worktimeDetialService = new WorktimeDetialService();
 	private HolidayService holidayService = new HolidayService();
 
+
+
+	@RequestMapping(value = "/Worktime.do" , params = { "action=exportWorktimeExcel" } )
+	public  ModelAndView doExporWorktime(
+			@RequestParam( "action") String action,
+			@RequestParam(required = false, value = "keyword") String keyword,
+			@RequestParam("yearMonth") String yearMonth
+			 ) {
+		
+		// return a view which will be resolved by an excel view resolver
+		return new ModelAndView("excelView", "yearMonth", yearMonth);
+	}
+	
+	@RequestMapping(value = "/Worktime.do", params = { "action=exportWorktimeExcelByEmail" })
+		protected void doExporWorktimeByEmail(HttpServletResponse response, HttpSession session, String yearMonth,
+				String keyword, HttpServletRequest request) {
+		
+			String email;
+			Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
+			email = new EmployeeService().getEmpEmail(loginInfo.get("empno"));
+
+			String fileName = (yearMonth.equals("") ? "至今" : yearMonth) + "工時報表";
+
+			try {
+				new ExcelService().sendExcel(request, yearMonth, keyword, email, fileName);
+				response.flushBuffer();
+			} catch (IOException e) {
+				// TODO 自動產生的 catch 區塊
+				e.printStackTrace();
+			}
+
+		}
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@RequestMapping(value = "Worktime.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/Worktime.do", method = RequestMethod.POST)
 	public String WorktimePost(Model model, HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("action") String action,
 			@RequestParam(required = false, value = "page") String pageNum,
@@ -107,7 +141,7 @@ public class WorktimeController extends HttpServlet {
 			@RequestParam(required = false, value = "friOver") String friOver,
 			@RequestParam(required = false, value = "satNormal") String satNormal,
 			@RequestParam(required = false, value = "satOver") String satOver,
-			@RequestParam(required = false, value = "detailIds") String detailIds
+			@RequestParam(required = false, value = "detailId") String[] detailIds
 
 	) {
 
@@ -123,10 +157,17 @@ public class WorktimeController extends HttpServlet {
 					wedNormal, satOver, satNormal, friOver, wedOver, thuNormal, thuOver, friNormal, workContents,
 					request, doSomething, firstday, model, session);
 			break;
-
-		case "searchEmpWorktime":
-			page = doSearchEmpWorktime(model, session, searchDate);
+			
+		case "searchWorktime_page":
+			doSearchWorktime(request, model, page, searchBy, keyword, dateAndWeek);
+			page = CHECKWORKTIME_PAGE;
 			break;
+			
+		case "checkBox_page":
+			page = doCheckbox(detailIds, pageAction, model);
+			break;
+
+		
 		case "updateStatus":
 			page = checkBoxEvent(datas, request, model, pageNum);
 			break;
@@ -144,7 +185,7 @@ public class WorktimeController extends HttpServlet {
 		return page;
 	}
 
-	@RequestMapping(value = "Worktime.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/Worktime.do", method = RequestMethod.GET)
 	public String WorktimeGet(Model model, HttpSession session, HttpServletRequest request,
 			HttpServletResponse response, @RequestParam("action") String action,
 			@RequestParam(required = false, value = "page") String pageNum,
@@ -174,7 +215,7 @@ public class WorktimeController extends HttpServlet {
 			@RequestParam(required = false, value = "friOver") String friOver,
 			@RequestParam(required = false, value = "satNormal") String satNormal,
 			@RequestParam(required = false, value = "satOver") String satOver,
-			@RequestParam(required = false, value = "detailIds") String detailIds
+			@RequestParam(required = false, value = "detailIds") String[] detailIds
 
 	)
 
@@ -197,21 +238,15 @@ public class WorktimeController extends HttpServlet {
 			page = doGetEmpWorktimeDetail(session, model, firstday);
 			break;
 
-		case "exportWorktimeExcel":
-			doExporWorktime(yearMonth, keyword, request, response);
-			return page;
-
-		case "exportWorktimeExcelByEmail":
-			doExporWorktimeByEmail(response, session, yearMonth, keyword, request);
-			return page;
-
 		/************************************** 以上陳民錞 ************************************/
-
+		case "searchEmpWorktime":
+			page = doSearchEmpWorktime(model, session, searchDate);
+			break;
 		/************************************** 以下張芷瑄 ************************************/
 		// 轉交至取得狀態名單
 		case "callWorktime_page":
 			// 轉交至取得未繳交名單
-			page = getUnsubmitEmp(request, pageNum);
+			page = getUnsubmitEmp(model , request, pageNum);
 			break;
 
 		// 全部催繳
@@ -224,15 +259,8 @@ public class WorktimeController extends HttpServlet {
 		case "checkWorktime_page":
 			page = doCheckWorktime(pageNum, model, request);
 			break;
-		case "checkBox_page":
-
-			page = doCheckbox(request, pageAction, model);
-			break;
-		case "searchWorktime_page":
-			doSearchWorktime(request, model, page, searchBy, keyword, dateAndWeek);
-
-			page = CHECKWORKTIME_PAGE;
-			break;
+		
+		
 
 		/************************************** 以上彥儒 ************************************/
 		/************************************** 以下吳軒穎 ************************************/
@@ -248,14 +276,14 @@ public class WorktimeController extends HttpServlet {
 
 		return page;
 	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
 
 	/************************************** 以下張芷瑄 ************************************/
-	protected String getUnsubmitEmp(HttpServletRequest request, String pageNum) {
+	protected String getUnsubmitEmp(Model model,HttpServletRequest request, String pageNum) {
 		Map<String, Object> dataMap = null;
 		List<Map<String, String>> UnsubmitEmpList = null;
 		Page page = new Page();
@@ -270,8 +298,8 @@ public class WorktimeController extends HttpServlet {
 		page = (Page) dataMap.get("page");
 		page.setAction(request);
 
-		request.setAttribute("page", page);
-		request.setAttribute("UnsubmitEmpList", UnsubmitEmpList);
+		model.addAttribute("page", page);
+		model.addAttribute("UnsubmitEmpList", UnsubmitEmpList);
 		return CAllWORKTIME_PAGE;
 	}
 
@@ -325,9 +353,9 @@ public class WorktimeController extends HttpServlet {
 		page.setAction(request);
 		model.addAttribute("page", page);
 		model.addAttribute("result", true);
-
-		return "/Worktime.do?action=callWorktime_page";
-
+		model.addAttribute("action", "callWorktime_page");
+//		return "/Worktime.do?action=callWorktime_page";
+        return getUnsubmitEmp(model,request,null);
 	}
 
 	protected String selectAllEmp(Model model, HttpServletRequest request, String pageNum) {
@@ -603,69 +631,6 @@ public class WorktimeController extends HttpServlet {
 		return WRITEWORKTIME_SUB_PAGE;
 	}
 
-	protected void doExporWorktime(String yearMonth, String keyword, HttpServletRequest request,
-			HttpServletResponse response) {
-
-		// String yearMonth = "";
-		// String keyword = "";
-		// if (request.getParameter("yearMonth") != null)
-		// yearMonth = request.getParameter("yearMonth");
-		// if (request.getParameter("keyword") != null)
-		// keyword = request.getParameter("keyword");
-
-//		response.setCharacterEncoding("utf-8");
-//		response.setContentType("application/ms-excel");
-
-		String fileName = (yearMonth.equals("") ? "至今" : yearMonth) + "工時報表";
-		try {
-			fileName = java.net.URLEncoder.encode(fileName, "utf-8");
-		} catch (UnsupportedEncodingException e1) {
-			// TODO 自動產生的 catch 區塊
-			System.err.println("編碼錯誤:" + e1.getMessage());
-		}
-
-		response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xls");
-
-		try {
-			new excelService().getExcel(request, yearMonth, keyword, response.getOutputStream());
-			response.flushBuffer();
-		} catch (IOException e) {
-			// TODO 自動產生的 catch 區塊
-			e.printStackTrace();
-		}
-		new excelService().sendExcel(request, yearMonth, keyword, "josjos910052@gmail.com", fileName);
-		return;
-
-	}
-
-	protected void doExporWorktimeByEmail(HttpServletResponse response, HttpSession session, String yearMonth,
-			String keyword, HttpServletRequest request) {
-		// String yearMonth = "";
-		// String keyword = "";
-		String email;
-		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
-		email = new EmployeeService().getEmpEmail(loginInfo.get("empno"));
-
-		// if (request.getParameter("yearMonth") != null)
-		// yearMonth = request.getParameter("yearMonth");
-		// if (request.getParameter("keyword") != null)
-		// keyword = request.getParameter("keyword");
-
-		response.setCharacterEncoding("utf-8");
-		response.setContentType("text/html");
-
-		String fileName = (yearMonth.equals("") ? "至今" : yearMonth) + "工時報表";
-
-		try {
-			new excelService().sendExcel(request, yearMonth, keyword, email, fileName);
-			response.flushBuffer();
-		} catch (IOException e) {
-			// TODO 自動產生的 catch 區塊
-			e.printStackTrace();
-		}
-
-	}
-
 	/************************************** 以上陳民錞 ************************************/
 
 	/************************************** 以下彥儒 ************************************/
@@ -730,8 +695,7 @@ public class WorktimeController extends HttpServlet {
 
 	}
 
-	protected String doCheckbox(HttpServletRequest request, String pageAction, Model model) {
-		String[] detailIds = request.getParameterValues("detailId");
+	protected String doCheckbox(String[] detailIds, String pageAction, Model model) {
 
 		for (int i = 0; i < detailIds.length; i++) {
 			System.out.println(detailIds[i]);
@@ -740,11 +704,11 @@ public class WorktimeController extends HttpServlet {
 
 		String uri = "./Worktime.do?action=checkWorktime_page";
 		if (pageAction != null || (!pageAction.equals(""))) {
-			uri = pageAction.substring(pageAction.indexOf("/Worktime.do?"));
+			uri = pageAction.substring(pageAction.indexOf("/Worktime.do"));
 		}
-
 		model.addAttribute("result", "success");
-		return uri;
+		
+		return "redirect:" + uri;
 	}
 
 	/************************************** 以上彥儒 ************************************/

@@ -21,7 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import dao.WorktimeDAO;
 import dao.WorktimeJDBCDAO;
 
-public class excelService {
+public class ExcelService {
 	private String path = null;
 
 	private WorktimeDAO wDAO = new WorktimeJDBCDAO();
@@ -75,7 +75,24 @@ public class excelService {
 		}
 		
 	}
-
+	
+	/***
+	 * 工時報表Excel實際邏輯
+	 * */
+	public void fillDataIntoSheet(final HSSFSheet worksheet, final String yearMonth, final String keyword) {
+		List<String[]> workTimelist = wDAO.getExcel(yearMonth, keyword);
+		for (int i = 1; i < workTimelist.size() + 1; i++) {
+			String[] worktime = workTimelist.get(i - 1);
+			HSSFRow row = worksheet.createRow(i);
+			for (int j = 0; j < worktime.length; j++) {
+				row.createCell((short) j).setCellValue(worktime[j]);
+			}
+		}
+		for (int i = 0; i < workTimelist.get(0).length; i++) {
+			worksheet.autoSizeColumn((short) i);
+		}
+	}
+	
 	private HSSFWorkbook creatExcel(HttpServletRequest request, String yearMonth, String keyword) {
 		HSSFWorkbook workbook = null;
 		this.path = request.getRealPath("/").replace("/", "\\") + "WEB-INF\\excel\\工時報表.xls";
@@ -84,23 +101,8 @@ public class excelService {
 			FileInputStream input = new FileInputStream(path);
 
 			workbook = new HSSFWorkbook(input);
-			List<String[]> workTimelist = wDAO.getExcel(yearMonth, keyword);
 			HSSFSheet worksheet = workbook.getSheetAt(0);
-
-			for (int i = 1; i < workTimelist.size() + 1; i++) {
-				String[] worktime = workTimelist.get(i - 1);
-				HSSFRow row = worksheet.createRow(i);
-				for (int j = 0; j < worktime.length; j++) {
-					row.createCell((short) j).setCellValue(worktime[j]);
-				}
-
-			}
-			for (int i = 0; i < workTimelist.get(0).length; i++) {
-				worksheet.autoSizeColumn((short) i);
-			}
-
-			
-
+			fillDataIntoSheet(worksheet,yearMonth,keyword);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println("I/O錯誤:"+e.getMessage());

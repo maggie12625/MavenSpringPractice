@@ -27,7 +27,7 @@ import service.EmployeeService;
 import service.HolidayService;
 import service.WorktimeDetialService;
 import service.WorktimeService;
-import service.excelService;
+import service.ExcelService;
 import utils.ValidateUtils;
 
 /**
@@ -360,7 +360,7 @@ public class WorktimeServlet extends HttpServlet {
 		}
 
 		String keyword = request.getParameter("keyword");
-		String yearMonth = request.getParameter("yearmon");
+		String yearMonth = request.getParameter("yearMonth");
 		String searchBy = "name";
 		if (keyword.matches("\\d*")) {
 			searchBy = "id";
@@ -537,7 +537,7 @@ public class WorktimeServlet extends HttpServlet {
 
 		response.setHeader("Content-Disposition", "attachment; filename=" + fileName + ".xls");
 		try {
-			new excelService().getExcel(request, yearMonth, keyword, response.getOutputStream());
+			new ExcelService().getExcel(request, yearMonth, keyword, response.getOutputStream());
 			response.flushBuffer();
 		} catch (IOException e) {
 			// TODO 自動產生的 catch 區塊
@@ -566,7 +566,7 @@ public class WorktimeServlet extends HttpServlet {
 		String fileName = (yearMonth.equals("") ? "至今" : yearMonth) + "工時報表";
 
 		try {
-			new excelService().sendExcel(request, yearMonth, keyword, email, fileName);
+			new ExcelService().sendExcel(request, yearMonth, keyword, email, fileName);
 			response.flushBuffer();
 		} catch (IOException e) {
 			// TODO 自動產生的 catch 區塊

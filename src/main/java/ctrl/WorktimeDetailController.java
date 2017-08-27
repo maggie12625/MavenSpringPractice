@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import model.Holiday;
@@ -26,6 +27,7 @@ import model.Worktime;
 import service.EmailService;
 import service.HolidayService;
 import service.WorktimeDetialService;
+import ctrl.WorktimeController.*;
 
 @Controller
 public class WorktimeDetailController extends HttpServlet {
@@ -33,6 +35,7 @@ public class WorktimeDetailController extends HttpServlet {
 	private static final String ERROR_PAGE = "login";
 	private static final String SEARCH_DETAIL_WORKTIME = "/WEB-INF/views/worktime/detailWorktime";
 	private static final String CHECK_WORKTIME_DETAIL_PAGE = "/WEB-INF/views/manager/checkWorktimeDetail";
+	private static final String CHECKWORKTIME_PAGE = "/WEB-INF/views/manager/checkWorktime";
 
 	private WorktimeDetialService worktimeDetialService = new WorktimeDetialService();
 	private HolidayService holidayService = new HolidayService();
@@ -41,17 +44,48 @@ public class WorktimeDetailController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	@RequestMapping("WorktimeDetail.do")
-	public String worktimDetail(@RequestParam("action") String action,
-			@RequestParam("id") String id,
-			@RequestParam("date") String date,
-			@RequestParam(required=false ,value ="pageAction") String pageAction,
-			@RequestParam(required=false ,value ="firstday")String firstDay ,
-			@RequestParam(required=false ,value ="status")String status ,
-			@RequestParam(required=false ,value ="reason")String reason ,
-			@RequestParam(required=false ,value ="k")String kind ,
-			HttpSession session,Model model){ 
-		
+	@RequestMapping(value = "/WorktimeDetail.do", method = RequestMethod.POST)
+	public String worktimDetailPOST(HttpServletRequest request,
+			@RequestParam("action") String action,
+			@RequestParam(required = false, value = "id") String id,
+			@RequestParam(required = false, value = "date") String date,
+			@RequestParam(required = false, value = "pageAction") String pageAction,
+			@RequestParam(required = false, value = "firstday") String firstDay,
+			@RequestParam(required = false, value = "status") String status,
+			@RequestParam(required = false, value = "reason") String reason,
+			@RequestParam(required = false, value = "k") String kind, HttpSession session, Model model) {
+		if (session.getAttribute("login") == null) {
+			return ERROR_PAGE;
+		}
+		String page = null;
+		System.out.println("worktimeDetail_action: " + action);
+		switch (action) {
+
+		case "checkDetail_page":
+			page = doCheckWorktime(id, firstDay, status, reason, kind, pageAction, model, request);
+//			System.out.println("------------" + request.getAttribute(action) + "----------------------");
+
+			break;
+
+		case "checkWorktimeDetail_page":
+			page = doShowcheckWorktimeDetail(id, date, pageAction, model);
+
+			break;
+
+		}
+		return page;
+	}
+
+	@RequestMapping(value = "/WorktimeDetail.do", method = RequestMethod.GET)
+	public String worktimDetailGET(@RequestParam("action") String action,
+			@RequestParam(required = false, value = "id") String id,
+			@RequestParam(required = false, value = "date") String date,
+			@RequestParam(required = false, value = "pageAction") String pageAction,
+			@RequestParam(required = false, value = "firstday") String firstDay,
+			@RequestParam(required = false, value = "status") String status,
+			@RequestParam(required = false, value = "reason") String reason,
+			@RequestParam(required = false, value = "k") String kind, HttpSession session, Model model) {
+
 		if (session.getAttribute("login") == null) {
 			return ERROR_PAGE;
 		}
@@ -61,33 +95,19 @@ public class WorktimeDetailController extends HttpServlet {
 
 		case "searchDetailWorktime":
 			// 轉交至詳細工時資料
-			Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
-			page = doSearchDetailWorktime(loginInfo,date ,id,model);
+			page = doSearchDetailWorktime(date, id, model, session);
 			break;
-
-		//post
-		case "checkWorktimeDetail_page":
-			page = doShowcheckWorktimeDetail(id,date,pageAction,model);
-			break;
-
-		/**************************** 以下彥儒 ***************************/
-		//post
-		case "checkDetail_page":
-			page = doCheckWorktime( id,  firstDay,  
-					status, reason,  kind,pageAction,model);
-			break;
-
-		/**************************** 以上彥儒 ***************************/
 
 		}
 		return page;
 	}
 
-	private String doSearchDetailWorktime(Map<String, String> loginInfo ,
-			String firstDateOfWeek ,String searchEmpno,Model model) {
-		 Map<String, Holiday> holidays = new HashMap<String, Holiday>();
+	private String doSearchDetailWorktime(String firstDateOfWeek, String searchEmpno, Model model,
+			HttpSession session) {
+		Map<String, String> loginInfo = (Map<String, String>) session.getAttribute("login");
+		Map<String, Holiday> holidays = new HashMap<String, Holiday>();
 		String position = loginInfo.get("position");
-		String empno = loginInfo.get("empno"); 
+		String empno = loginInfo.get("empno");
 		Worktime searchData = null;
 
 		System.out.println("搜尋詳細工時- 搜尋員編:" + searchEmpno + " 搜尋日: " + firstDateOfWeek);
@@ -120,10 +140,9 @@ public class WorktimeDetailController extends HttpServlet {
 		return SEARCH_DETAIL_WORKTIME;
 	}
 
-	private String doShowcheckWorktimeDetail(
-			String id, String date, String pageAction, Model model) {
-		 
-		System.out.println("~~~~action:"+pageAction);
+	private String doShowcheckWorktimeDetail(String id, String date, String pageAction, Model model) {
+
+		System.out.println("~~~~action:" + pageAction);
 		model.addAttribute("id", id);
 		model.addAttribute("firstDateOfWeek", date);
 		model.addAttribute("pageAction", pageAction);
@@ -132,11 +151,8 @@ public class WorktimeDetailController extends HttpServlet {
 
 	/**************************** 以下彥儒 ***************************/
 
-	private String doCheckWorktime(
-			String id,
-			String date, String status,
-           String reason, 
-			String kind,String pageAction,Model model) {
+	private String doCheckWorktime(String id, String date, String status, String reason, String kind, String pageAction,
+			Model model, HttpServletRequest request) {
 
 		String worktimeEmail = null;
 
@@ -175,15 +191,18 @@ public class WorktimeDetailController extends HttpServlet {
 		model.addAttribute("result", "success");
 
 		String uri = "./Worktime.do?action=checkWorktime_page";
-		System.out.println();
+
 		if (pageAction != null || (!pageAction.equals(""))) {
 			uri = pageAction.substring(pageAction.indexOf("/Worktime.do?"));
+			
 		}
 		if (!"simple".equals(kind)) {
-			uri = "./WorktimeDetail.do?action=checkWorktimeDetail_page&id=" + id + "&date=" + date;
+			uri = "./WorktimeDetail.do?action=checkWorktimeDetail_page&id="+id+"&date="+date;
+			
 		}
-
-		return uri;
+		
+		
+		return doShowcheckWorktimeDetail(id, date, pageAction, model);
 	}
 
 	/**************************** 以上彥儒 ***************************/
