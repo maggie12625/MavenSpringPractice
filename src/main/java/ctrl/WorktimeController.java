@@ -414,7 +414,7 @@ public class WorktimeController extends HttpServlet {
 
 		model.addAttribute("page", page);
 		model.addAttribute("result", true);
-		return "/Worktime.do?action=callWorktime_page";
+		return getUnsubmitEmp(model,request,null);
 
 	}
 
@@ -706,9 +706,9 @@ public class WorktimeController extends HttpServlet {
 		if (pageAction != null || (!pageAction.equals(""))) {
 			uri = pageAction.substring(pageAction.indexOf("/Worktime.do"));
 		}
-		model.addAttribute("result", "success");
+//		model.addAttribute("result", "success");
 		
-		return "redirect:" + uri;
+		return "redirect:"+uri;
 	}
 
 	/************************************** 以上彥儒 ************************************/
