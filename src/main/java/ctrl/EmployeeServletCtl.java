@@ -58,6 +58,7 @@ public class EmployeeServletCtl {
 	/********************************** 以上張芷瑄 *****************************************/
 
 	private EmployeeService employeeService = new EmployeeService();
+	private StartEmpService startEmpService=new StartEmpService();
 
 	@RequestMapping(value = "/Employee.do", method = RequestMethod.POST)
 	public String doPost(Model model, HttpSession session, HttpServletRequest request,
@@ -99,8 +100,7 @@ public class EmployeeServletCtl {
 			page = doChangePwd(session, model, old_password, new_password, new_again_password);
 			break;
 		case "search_employee":
-			doSearchEmployee(model, request, pageNum, searchBy, keyword);
-			page = MGR_SEARCH_EMP_PAGE;
+			page=doSearchEmployee(model, request, pageNum, searchBy, keyword);
 			break;
 		case "FindUpdateEmp":
 			page = doFindUpdateEmp(model, session, request, input, pageNum, searchBy);
@@ -136,7 +136,7 @@ public class EmployeeServletCtl {
 			break;
 
 		// 進行變更密碼
-		case "changPwd":
+		case "changPwd_page":
 			page = doChangePwd(session, model, old_password, new_password, new_again_password);
 			break;
 		/************************************ 底下彥儒 **********************************/
@@ -254,7 +254,6 @@ public class EmployeeServletCtl {
 				model.addAttribute("result", true);
 				employeeService.update(empVO);
 			}
-
 		}
 
 		return CHANGE_PASSWORD_PAGE;
@@ -287,8 +286,6 @@ public class EmployeeServletCtl {
 			page.setNowPage(Integer.parseInt(pageNum));
 		}
 
-		// String searchBy = request.getParameter("by");
-		// String keyword = request.getParameter("keyword");
 		Map<String, Object> dataMap;// List<Employee>
 		List<Employee> empSearch = null;
 
@@ -400,7 +397,7 @@ public class EmployeeServletCtl {
 		// 發送email
 		EmailService service = new EmailService();
 		StringBuilder html = new StringBuilder();
-		String uri = new StartEmpService().addEmp(emp.getEmpno(), request);
+		String uri = startEmpService.addEmp(emp.getEmpno(), request);
 		html.append("<style>p{margin: 0 0;}p span{margin: 0 10px;}</style>");
 		html.append("<center><h1>工時系統-啟動帳號</h1><hr>");
 		html.append("<h2>您的帳號已被建立，請點選以下連結來啟用您的帳號</h2>");

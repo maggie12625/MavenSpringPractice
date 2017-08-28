@@ -70,10 +70,10 @@ public class WorktimeServlet extends HttpServlet {
 		String action = request.getParameter("action");
 		String page = null;
 
-		if (request.getSession().getAttribute("login") == null) {
-			request.getRequestDispatcher("./Logout.do").forward(request, response);
-			return;
-		}
+//		if (request.getSession().getAttribute("login") == null) {
+//			request.getRequestDispatcher("./Logout.do").forward(request, response);
+//			return;
+//		}
 		System.out.println("worktiom_action: " + action);
 		switch (action) {
 
