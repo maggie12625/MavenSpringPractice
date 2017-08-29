@@ -37,7 +37,7 @@ public class LogoutCtlTest {
 	public void testSimple() throws Exception {
 
 		RequestBuilder requestBuilder=post("/Logout.do")
-				.sessionAttr("login", anyMap());
+				.sessionAttr("login",new Object());
 
         mvcMock.perform(requestBuilder)
 		       .andExpect(status().isOk())

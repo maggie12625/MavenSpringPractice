@@ -15,7 +15,7 @@ $(function(){
             required: "請輸入密碼!"
           }
         },
-      highlight:function(element, errorClass) {
+      highlight:function(element,errorClass) {
         $(element).fadeOut(function(){$(element).fadeIn(); });
           
         $(element).addClass('error_bg').removeClass('success_bg').closest('div').addClass('has-error');
