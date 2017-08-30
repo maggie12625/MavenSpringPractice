@@ -9,8 +9,6 @@ import java.util.Map;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,22 +22,24 @@ import service.EmployeeService;
 public class ForgetPwdCtl {
 	
 	private static final int MAXPASSWORD = 6;
-	private static final String FORGET_PWD_PAGE = "/forgetPwd";
+	private static final String FORGET_PWD_PAGE = "forgetPwd";
+	
+	EmployeeService employeeService = new EmployeeService();
+	EmailService service = new EmailService();
 	
 	@RequestMapping(value="/ForgetPwd.do",method=RequestMethod.POST)
-	public String simple(HttpSession session,Model model,
-			@RequestParam("empno")String empno,@RequestParam("id")String id) {
+	public String simple(Model model,@RequestParam("empno")String empno,
+			@RequestParam("id")String id) {
 
 		Boolean result = false;
-
 		String path = FORGET_PWD_PAGE;
 
 		Map<String, String> errorMsgs = new HashMap<>();
 
 		id=id.toUpperCase();
+		model.addAttribute("result",result);
 		model.addAttribute("empno", empno);
 		model.addAttribute("id", id);
-		EmployeeService employeeService = new EmployeeService();
 
 		// 是否有此員編
 		if (!employeeService.hasEmp(empno)) {
@@ -82,7 +82,7 @@ public class ForgetPwdCtl {
 		emp.setPassword(new_password.toString());
 		employeeService.update(emp);
 		// 送出email
-		EmailService service = new EmailService();
+		
 		StringBuilder Text = new StringBuilder();
 		// 忘記密碼時間
 		Date date = new Date();
