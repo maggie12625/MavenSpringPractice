@@ -11,6 +11,7 @@ $(function(){
           empno: "請輸入員編",
           id:	 "請輸入身分證"
         },
+        
       highlight:function(element, errorClass) {
         $(element).fadeOut(function(){$(element).fadeIn(); });
           

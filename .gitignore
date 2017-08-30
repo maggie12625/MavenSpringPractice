@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-target
-.classpath
-.settings
-.project
-build
-=======
 /target/
 build
 .classpath
 .settings
 .project
->>>>>>> refs/remotes/origin/master
 .DS_Store

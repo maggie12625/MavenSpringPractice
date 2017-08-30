@@ -35,13 +35,9 @@
 		</c:if>
 		<c:if
 			test="${requestScope.page.nowPage<requestScope.page.pagesCount-2}">
-<<<<<<< HEAD
+
 			<li><a
 				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage +1}">&rsaquo;</a>
-=======
-			<li><a
-				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.nowPage +1}">&rsaquo;</a>
->>>>>>> branch 'master' of https://github.com/maggie12625/bbb.git
 			</li>
 			<li><a
 				href="${ctxPath}${requestScope.page.action}page=${requestScope.page.pagesCount}">&raquo;</a>
@@ -51,9 +47,12 @@
 	</ul>
 </div>
 <c:if test="${requestScope.page.rowsCount>0 }">
-	<div style="float: left;">[ 第${1+(requestScope.page.nowPage-1)*(requestScope.page.pageSize)} ~ ${(requestScope.page.nowPage-1)*(requestScope.page.pageSize)+requestScope.page.pageRowsCount}筆-共${requestScope.page.rowsCount}筆 ]</div>
+	<div style="float: left;">[
+		第${1+(requestScope.page.nowPage-1)*(requestScope.page.pageSize)} ~
+		${(requestScope.page.nowPage-1)*(requestScope.page.pageSize)+requestScope.page.pageRowsCount}筆-共${requestScope.page.rowsCount}筆
+		]</div>
 </c:if>
- 
+
 <div sytle="clear: both;"></div>
 
 

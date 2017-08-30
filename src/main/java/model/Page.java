@@ -76,7 +76,7 @@ public class Page {
 
 	public void setAction(HttpServletRequest request) {
 		StringBuilder uri = new StringBuilder();
-		
+
 		uri.append(request.getContextPath());
 		uri.append(request.getServletPath() + "?");
 		Enumeration enumeration = request.getParameterNames();
@@ -86,16 +86,17 @@ public class Page {
 				continue;
 			uri.append(parameter);
 			uri.append("=");
-//			String value = request.getParameter(parameter);
-//			
-//			try {
-//				value = URLEncoder.encode(request.getParameter(parameter), "utf-8");
-//			} catch (UnsupportedEncodingException e) {
-//				// TODO 自動產生的 catch 區塊
-//				System.out.println("字體編碼錯誤:" + e.getMessage());
-//			}
-//			
-//			value=new String(value);
+			// String value = request.getParameter(parameter);
+			//
+			// try {
+			// value = URLEncoder.encode(request.getParameter(parameter),
+			// "utf-8");
+			// } catch (UnsupportedEncodingException e) {
+			// // TODO 自動產生的 catch 區塊
+			// System.out.println("字體編碼錯誤:" + e.getMessage());
+			// }
+			//
+			// value=new String(value);
 			uri.append(request.getParameter(parameter));
 			uri.append("&");
 		}
